@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import time
 
 st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", layout="centered")
 
+# Usuários válidos e passwords
 VALID_USERS = {
     "afzfpk": "4124",
     "familia": "familia2025"
@@ -25,12 +25,35 @@ def login():
             st.error("Usuário ou senha incorretos")
 
 def animar_afzf():
-    # simples efeito pisca-pisca no nome AFZF com emojis
-    for _ in range(2):
-        st.markdown("<h2 style='text-align:center; color:#27ae60;'>by <span style='color:#f39c12;'>AFZF</span> 🧠🍕</h2>", unsafe_allow_html=True)
-        time.sleep(0.5)
-        st.markdown("<h2 style='text-align:center; color:#27ae60;'>by <span style='color:#e74c3c;'>AFZF</span> 🤖✨</h2>", unsafe_allow_html=True)
-        time.sleep(0.5)
+    pisca_css = """
+    <style>
+    @keyframes piscar {
+        0% {opacity: 1; color: #f39c12;}
+        50% {opacity: 0.5; color: #e74c3c;}
+        100% {opacity: 1; color: #f39c12;}
+    }
+    .pisca-afzf {
+        animation: piscar 2s infinite;
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.8em;
+    }
+    </style>
+    <div class="pisca-afzf">by AFZF 🧠🍕</div>
+    """
+    st.markdown(pisca_css, unsafe_allow_html=True)
+
+def tabela_exemplos():
+    st.markdown("### 📋 Exemplos de Odds que dão Arbitragem (lucro garantido)")
+
+    odds1 = np.round(np.arange(1.01, 2.5, 0.05), 2)
+    exemplos = []
+    for o1 in odds1:
+        o2_min = round(1 / (1 - 1/o1), 2)  # fórmula para arbitragem: 1/odd1 + 1/odd2 < 1
+        exemplos.append({"Odd 1": o1, "Odd 2 mínima para arbitragem": o2_min})
+
+    df = pd.DataFrame(exemplos)
+    st.dataframe(df.style.format({"Odd 1": "{:.2f}", "Odd 2 mínima para arbitragem": "{:.2f}"}), height=250)
 
 def calculadora():
     st.markdown(
@@ -76,6 +99,7 @@ def calculadora():
         st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2}")
         st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
 
+        # Gráfico de lucro ao longo de 10 apostas
         df = pd.DataFrame({
             'Apostas': list(range(1, 11)),
             'Banca (€)': np.cumsum([lucro_minimo] * 10) + amount
@@ -99,21 +123,16 @@ def calculadora():
             st.markdown("### 🕒 Histórico de Apostas")
             st.table(pd.DataFrame(st.session_state.historico))
 
-        # Tabela compacta de exemplos de odds para arbitragem:
-        with st.expander("📚 Exemplos rápidos de odds para arbitragem"):
-            exemplos = {
-                "Odd 1": [1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80, 1.90, 2.00],
-                "Mínima Odd 2": [11.00, 6.00, 3.90, 2.50, 2.33, 2.14, 2.04, 1.90, 1.83, 1.75]
-            }
-            df_exemplos = pd.DataFrame(exemplos)
-            st.dataframe(df_exemplos.style.set_precision(2).set_table_styles([
-                {'selector': 'thead', 'props': [('background-color', '#f9f9f9')]},
-                {'selector': 'tbody tr:hover', 'props': [('background-color', '#e0f7fa')]},
-                {'selector': 'td', 'props': [('text-align', 'center')]},
-            ]), height=250)
+        tabela_exemplos()
+
+        # Surpresa extra: animação de balões se lucro alto
+        if arbitrage_percent < 0.9:
+            st.balloons()
+            st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão!")
 
     else:
         st.error("❌ Não há arbitragem possível com estas odds. Tenta outras!")
+        tabela_exemplos()
 
     st.markdown("<hr>", unsafe_allow_html=True)
     animar_afzf()
@@ -121,10 +140,6 @@ def calculadora():
         "<p style='text-align:center; color:gray;'>Dev with <strong>O P E N A I</strong> & <strong>S T R E A M L I T</strong> — configured and coded by <strong>AFZF</strong><br>Calculadora 101% Sure BET for <strong>ÁLAMOS partners xD! </strong> 🧠🍕</p>",
         unsafe_allow_html=True
     )
-
-    if arbitrage_percent < 0.9:
-        st.balloons()
-        st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão!")
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
