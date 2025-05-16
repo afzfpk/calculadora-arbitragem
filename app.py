@@ -3,8 +3,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+# Configurações da página com ícone simples (não duplicado)
 st.set_page_config(
-    page_title="🎯 Calculadora 101% Sure BET",
+    page_title="🎯 Calculadora 101%",
     page_icon="🎯",
     layout="centered",
     initial_sidebar_state="expanded"
@@ -15,23 +16,58 @@ VALID_USERS = {
     "familia": "familia2025"
 }
 
-# CSS para dark mode e animações suaves
+# CSS para dark mode, animação título e rodapé fixo elegante
 css = """
 <style>
     body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         transition: background-color 0.5s ease, color 0.5s ease;
     }
+    /* Animação título principal */
+    .title-anim {
+        font-weight: 900;
+        font-size: 3rem;
+        text-align: center;
+        color: #4CAF50;
+        margin-bottom: 0;
+        animation: pulseGlow 2.5s ease-in-out infinite;
+    }
+    .title-anim span {
+        color: #f39c12;
+    }
+    @keyframes pulseGlow {
+        0%, 100% {
+            text-shadow: 0 0 10px #4CAF50, 0 0 20px #4CAF50;
+        }
+        50% {
+            text-shadow: 0 0 20px #f39c12, 0 0 30px #f39c12;
+        }
+    }
+    /* Subtítulo logo */
+    .subtitle {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-style: italic;
+    }
+    /* Rodapé fixo, discreto e elegante */
     .footer {
-        opacity: 0;
-        animation: fadeIn 3s forwards;
-        font-size: 14px;
+        opacity: 0.6;
+        font-size: 13px;
         color: gray;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 40px;
+        font-style: italic;
     }
-    @keyframes fadeIn {
-        to { opacity: 1; }
+    /* Tabela compacta estilizada */
+    .compact-table th, .compact-table td {
+        padding: 4px 8px !important;
+        font-size: 0.85rem;
+        text-align: center;
     }
+    /* Botões e inputs */
     .stButton>button {
         transition: background-color 0.3s ease;
     }
@@ -91,15 +127,18 @@ def login():
             st.error("Usuário ou senha incorretos")
 
 def tabela_exemplos():
-    st.markdown("### 📋 Exemplos comuns de Odds que dão Arbitragem (lucro garantido)")
+    st.markdown("### 📋 Exemplos compactos de Odds para Arbitragem (lucro garantido)")
     odd1_comuns = [1.20, 1.30, 1.40, 1.50, 1.60, 1.80, 2.00, 2.20]
     exemplos = []
     for o1 in odd1_comuns:
         o2_min = round(1 / (1 - 1/o1), 2)
-        exemplos.append({"Odd 1": o1, "Odd 2 mínima para arbitragem": o2_min})
+        exemplos.append({"Odd 1": o1, "Odd 2 mínima p/ arbitragem": o2_min})
 
     df = pd.DataFrame(exemplos)
-    st.dataframe(df.style.format({"Odd 1": "{:.2f}", "Odd 2 mínima para arbitragem": "{:.2f}"}), height=280)
+    styled = df.style.set_table_attributes('class="compact-table"')\
+        .format({"Odd 1": "{:.2f}", "Odd 2 mínima p/ arbitragem": "{:.2f}"})\
+        .set_properties(**{'text-align': 'center'})
+    st.dataframe(styled, height=160, width=380)
 
 def exportar_historico_csv():
     if 'historico' in st.session_state and st.session_state.historico:
@@ -117,20 +156,19 @@ def calculadora():
     apply_dark_mode(dark_mode)
     st.markdown(css, unsafe_allow_html=True)
 
-    st.markdown(
-        '''
-        <h1 style='text-align: center; color: #4CAF50; font-weight: 800;'>🎯 Calculadora <span style="color:#f39c12">101% Sure BET</span></h1>
-        <p style='text-align: center; color: #666; font-size:16px; margin-bottom:25px;'>Calcula apostas seguras e vê se consegues lucrar em qualquer resultado 💸</p>
-        <hr>
-        ''', unsafe_allow_html=True
-    )
+    # Título animado
+    st.markdown("<h1 class='title-anim'>🎯 Calculadora <span>101%</span></h1>", unsafe_allow_html=True)
+    # Subtítulo estilizado
+    st.markdown("<p class='subtitle'>by <strong>AFZF</strong></p>", unsafe_allow_html=True)
 
+    # Botão logout
     if st.button("🔒 Logout", key="logout_btn"):
         st.session_state["logged_in"] = False
         st.session_state["user"] = None
         st.experimental_rerun()
 
-    col1, col2 = st.columns([1,1])
+    # Inputs lado a lado
+    col1, col2 = st.columns(2)
     with col1:
         odd1 = st.number_input("🔢 Odd 1", min_value=1.01, step=0.01, value=2.10, format="%.2f")
     with col2:
@@ -160,6 +198,7 @@ def calculadora():
         st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2:.2f}")
         st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
 
+        # Gráfico simples lucro acumulado em 10 rodadas
         df = pd.DataFrame({
             'Rodadas': list(range(1, 11)),
             'Banca (€)': np.cumsum([lucro_minimo] * 10) + amount
@@ -194,37 +233,20 @@ def calculadora():
                 'Odd 2': '{:.2f}',
                 'Montante (€)': '€ {:.2f}',
                 'Lucro (€)': '€ {:.2f}'
-            }), height=280)
+            }), height=280, width=450)
             exportar_historico_csv()
 
-        if arbitrage_percent < 0.9:
-            st.balloons()
-            st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão! 🥳")
-
     else:
-        st.error("❌ Não há arbitragem possível com estas odds. Tenta outras!")
+        st.error("⚠️ Arbitragem NÃO possível com essas odds. Tente outras.")
 
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div class="footer">
-        Dev with <strong>O P E N A I</strong> &amp; <strong>S T R E A M L I T</strong> — configured and coded by <strong>AFZF</strong><br>
-        Calculadora 101% Sure BET for <strong>ÁLAMOS partners xD!</strong> 🧠🍕
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("<p style='text-align:center; margin-top: 15px; font-size: 1rem; color: #333;'>Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕</p>", unsafe_allow_html=True)
+    tabela_exemplos()
 
-def main():
-    if "logged_in" not in st.session_state:
-        st.session_state["logged_in"] = False
-        st.session_state["user"] = None
+    # Rodapé elegante
+    st.markdown("<div class='footer'>Dev with O P E N A I &amp; S T R E A M L I T — configured and coded by AFZF</div>", unsafe_allow_html=True)
 
-    if not st.session_state["logged_in"]:
+if __name__ == "__main__":
+    if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
         login()
     else:
         calculadora()
-        tabela_exemplos()
-
-if __name__ == "__main__":
-    main()
