@@ -3,13 +3,12 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# Config da página
 st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", layout="centered")
 
-# Credenciais simples para login
+# Usuários válidos e suas senhas (modifica conforme quiser)
 VALID_USERS = {
-    "afzfpk": "4124admin4124",  # muda aqui para a senha que quiseres
-    "amigos": "amigos2025"
+    "afzfpk": "mypassword123",
+    "familia": "familia2025"
 }
 
 def login():
@@ -21,7 +20,7 @@ def login():
             st.session_state["logged_in"] = True
             st.session_state["user"] = username
             st.success(f"Bem-vindo, {username}!")
-            return True  # Indica login com sucesso
+            return True  # Login ok
         else:
             st.error("Usuário ou senha incorretos")
     return False
@@ -39,7 +38,6 @@ def calculadora():
         st.session_state["logged_in"] = False
         st.experimental_rerun()
 
-    # Inputs
     col1, col2 = st.columns(2)
     with col1:
         odd1 = st.number_input("🔢 Odd 1", min_value=1.01, step=0.01, value=2.10)
@@ -65,20 +63,17 @@ def calculadora():
         lucro_minimo = round(min(lucro1, lucro2), 2)
         lucro_percent = round((lucro_minimo / amount) * 100, 2)
 
-        # Resultados
         st.markdown("### 📊 Resultados")
         st.info(f"🔹 **Aposta 1:** €{stake1:.2f} | Odd: {odd1}")
         st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2}")
         st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
 
-        # Gráfico lucro simulado
         df = pd.DataFrame({
             'Apostas': list(range(1, 11)),
             'Banca (€)': np.cumsum([lucro_minimo] * 10) + amount
         })
         st.line_chart(df.set_index('Apostas'))
 
-        # Histórico
         if 'historico' not in st.session_state:
             st.session_state.historico = []
 
@@ -105,11 +100,15 @@ def calculadora():
         unsafe_allow_html=True
     )
 
+
+# Inicialização do estado
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
 
+# Fluxo principal
 if not st.session_state["logged_in"]:
-    if login():
+    logged = login()
+    if logged:
         st.experimental_rerun()
 else:
     calculadora()
