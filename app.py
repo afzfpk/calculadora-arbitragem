@@ -38,17 +38,17 @@ st.markdown("""
     padding: 4px 8px!important; font-size: .85rem; text-align: center;
   }
   .footer-note {
-    font-size: 1rem; font-weight: 700; color: #2e7d32; /* verde relva */
+    font-size: 1rem; font-weight: 700; color: #e2b200; /* verde relva */
     text-align: center; margin: 20px 0 10px;
     text-shadow: 1px 1px 2px #a5d6a7; user-select: none;
   }
   .footer {
-    opacity: .6; font-size: 13px; color: gray;
+    opacity: .8; font-size: 12px; color: gray;
     text-align: center; margin-top: 10px; user-select: none;
   }
   .footer .afzf {
-    font-weight: 900; color: #f39c12;
-    animation: pulse 2s infinite;
+    font-weight: 900; color: #79fbff;
+    animation: pulse 3s infinite;
   }
   .stButton > button {
     width: 100%; margin-top: 10px;
