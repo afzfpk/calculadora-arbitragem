@@ -5,7 +5,7 @@ from datetime import datetime
 
 st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", layout="centered")
 
-# Usuários válidos e suas senhas (modifica conforme quiser)
+# Usuários válidos e passwords
 VALID_USERS = {
     "afzfpk": "4124",
     "familia": "familia2025"
@@ -15,15 +15,14 @@ def login():
     st.title("🔐 Login para acessar a Calculadora")
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
-    if st.button("Entrar"):
+    login_btn = st.button("Entrar")
+    if login_btn:
         if username in VALID_USERS and password == VALID_USERS[username]:
             st.session_state["logged_in"] = True
             st.session_state["user"] = username
-            st.success(f"Bem-vindo, {username}!")
-            return True  # Login ok
+            st.success(f"Bem-vindo, {username}! 🎉")
         else:
             st.error("Usuário ou senha incorretos")
-    return False
 
 def calculadora():
     st.markdown(
@@ -36,6 +35,7 @@ def calculadora():
 
     if st.button("🔒 Logout"):
         st.session_state["logged_in"] = False
+        st.session_state["user"] = None
         st.experimental_rerun()
 
     col1, col2 = st.columns(2)
@@ -96,19 +96,20 @@ def calculadora():
 
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown(
-        "<p style='text-align:center; color:gray;'>Dev with <strong>o p e n  a i</strong> & <strong>s t r e a m  l i t</strong> — config and coded by <strong>AFZF</strong><br>Calculadora 101% Sure BET for <strong>ÁLAMOS partners</strong> 🧠🍕</p>",
+        "<p style='text-align:center; color:gray;'>Dev with <strong>O P E N A I</strong> & <strong>S T R E A M L I t</strong> — configured and coded by <strong>AFZF</strong><br>Calculadora 101% Sure BET for <strong>ÁLAMOS partners xD! </strong> 🧠🍕</p>",
         unsafe_allow_html=True
     )
 
+    # Surpresa extra: um easter egg divertido que aparece se o lucro for alto
+    if arbitrage_percent < 0.9:
+        st.balloons()
+        st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão!")
 
-# Inicialização do estado
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
+    st.session_state["user"] = None
 
-# Fluxo principal
 if not st.session_state["logged_in"]:
-    logged = login()
-    if logged:
-        st.experimental_rerun()
+    login()
 else:
     calculadora()
