@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Configurações da página com ícone simples (não duplicado)
 st.set_page_config(
-    page_title="🎯 Calculadora 101%",
+    page_title="Calculadora SUREBET101% by AFZF",
     page_icon="🎯",
     layout="centered",
     initial_sidebar_state="expanded"
@@ -16,7 +16,7 @@ VALID_USERS = {
     "familia": "familia2025"
 }
 
-# CSS para dark mode, animação título e rodapé fixo elegante
+# CSS para animação título e estilos gerais
 css = """
 <style>
     body {
@@ -29,8 +29,9 @@ css = """
         font-size: 3rem;
         text-align: center;
         color: #4CAF50;
-        margin-bottom: 0;
+        margin-bottom: 30px;
         animation: pulseGlow 2.5s ease-in-out infinite;
+        user-select: none;
     }
     .title-anim span {
         color: #f39c12;
@@ -43,23 +44,15 @@ css = """
             text-shadow: 0 0 20px #f39c12, 0 0 30px #f39c12;
         }
     }
-    /* Subtítulo logo */
-    .subtitle {
-        text-align: center;
-        color: #666;
-        font-size: 1.1rem;
-        margin-top: 0;
-        margin-bottom: 25px;
-        font-style: italic;
-    }
-    /* Rodapé fixo, discreto e elegante */
+    /* Rodapé discreto */
     .footer {
-        opacity: 0.6;
+        opacity: 0.5;
         font-size: 13px;
         color: gray;
         text-align: center;
-        margin-top: 40px;
         font-style: italic;
+        user-select: none;
+        margin-bottom: 20px;
     }
     /* Tabela compacta estilizada */
     .compact-table th, .compact-table td {
@@ -73,44 +66,6 @@ css = """
     }
 </style>
 """
-
-def apply_dark_mode(dark_mode):
-    if dark_mode:
-        st.markdown(
-            """
-            <style>
-            body {
-                background-color: #121212;
-                color: #eee;
-            }
-            .stButton>button {
-                background-color: #333 !important;
-                color: #eee !important;
-            }
-            .stTextInput>div>input, .stNumberInput>div>input {
-                background-color: #333 !important;
-                color: #eee !important;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            """
-            <style>
-            body {
-                background-color: #fff;
-                color: #000;
-            }
-            .stButton>button {
-                background-color: #4CAF50 !important;
-                color: white !important;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
 
 def login():
     st.title("🔐 Login para acessar a Calculadora")
@@ -127,7 +82,6 @@ def login():
             st.error("Usuário ou senha incorretos")
 
 def tabela_exemplos():
-    st.markdown("### 📋 Exemplos compactos de Odds para Arbitragem (lucro garantido)")
     odd1_comuns = [1.20, 1.30, 1.40, 1.50, 1.60, 1.80, 2.00, 2.20]
     exemplos = []
     for o1 in odd1_comuns:
@@ -138,7 +92,7 @@ def tabela_exemplos():
     styled = df.style.set_table_attributes('class="compact-table"')\
         .format({"Odd 1": "{:.2f}", "Odd 2 mínima p/ arbitragem": "{:.2f}"})\
         .set_properties(**{'text-align': 'center'})
-    st.dataframe(styled, height=160, width=380)
+    st.dataframe(styled, height=260, width=400)
 
 def exportar_historico_csv():
     if 'historico' in st.session_state and st.session_state.historico:
@@ -152,14 +106,10 @@ def exportar_historico_csv():
         )
 
 def calculadora():
-    dark_mode = st.sidebar.checkbox("Modo Escuro 🌙", value=False)
-    apply_dark_mode(dark_mode)
     st.markdown(css, unsafe_allow_html=True)
 
-    # Título animado
+    # Título animado (sem subtítulo)
     st.markdown("<h1 class='title-anim'>🎯 Calculadora <span>101%</span></h1>", unsafe_allow_html=True)
-    # Subtítulo estilizado
-    st.markdown("<p class='subtitle'>by <strong>AFZF</strong></p>", unsafe_allow_html=True)
 
     # Botão logout
     if st.button("🔒 Logout", key="logout_btn"):
@@ -239,11 +189,31 @@ def calculadora():
     else:
         st.error("⚠️ Arbitragem NÃO possível com essas odds. Tente outras.")
 
-    st.markdown("<p style='text-align:center; margin-top: 15px; font-size: 1rem; color: #333;'>Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕</p>", unsafe_allow_html=True)
     tabela_exemplos()
 
-    # Rodapé elegante
-    st.markdown("<div class='footer'>Dev with O P E N A I &amp; S T R E A M L I T — configured and coded by <span style='font-weight:900; animation: pulseGlow 2.5s ease-in-out infinite; color:#4CAF50;'>AFZF</span></div>", unsafe_allow_html=True)
+    # Texto divertido e destacado abaixo da tabela
+    st.markdown("""
+    <div style="
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ff6f61;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        user-select: none;
+        text-shadow: 1px 1px 3px #ffb3ab;
+        ">
+        Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Rodapé discreto, abaixo do texto destacado
+    st.markdown("""
+    <div class='footer'>
+        Dev with O P E N A I &amp; S T R E A M L I T — configured and coded by <strong>AFZF</strong>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
