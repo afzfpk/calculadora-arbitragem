@@ -29,7 +29,7 @@ css = """
         font-size: 3rem;
         text-align: center;
         color: #4CAF50;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
         animation: pulseGlow 2.0s ease-in-out infinite;
         user-select: none;
     }
@@ -47,17 +47,17 @@ css = """
     /* Rodapé discreto */
     .footer {
         opacity: 0.8;
-        font-size: 13px;
+        font-size: 12px;
         color: gray;
         text-align: center;
         font-style: italic;
         user-select: none;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     /* Tabela compacta estilizada */
     .compact-table th, .compact-table td {
-        padding: 4px 8px !important;
-        font-size: 0.85rem;
+        padding: 3.5px 7.5px !important;
+        font-size: 0.80rem;
         text-align: center;
     }
     /* Botões e inputs */
@@ -69,8 +69,8 @@ css = """
 
 def login():
     st.title("🔐 Só convidados ahahah! Login para acessar à Calculadora101%?")
-    username = st.text_input("Usuário", placeholder="O TEU NOME?")
-    password = st.text_input("Senha", type="password", placeholder="A TUA PASSWORD?")
+    username = st.text_input("NOME", placeholder="O TEU NOME?")
+    password = st.text_input("PASSWORD", type="password", placeholder="A TUA PASSWORD?")
     login_btn = st.button("Entrar")
     if login_btn:
         if username in VALID_USERS and password == VALID_USERS[username]:
@@ -86,11 +86,11 @@ def tabela_exemplos():
     exemplos = []
     for o1 in odd1_comuns:
         o2_min = round(1 / (1 - 1/o1), 2)
-        exemplos.append({"Odd 1": o1, "Odd 2 mínima p/ arbitragem": o2_min})
+        exemplos.append({"Odd 1 EXEMPLOS": o1, "Odd 2 EXEMPLOS": o2_min})
 
     df = pd.DataFrame(exemplos)
     styled = df.style.set_table_attributes('class="compact-table"')\
-        .format({"Odd 1": "{:.2f}", "Odd 2 mínima p/ arbitragem": "{:.2f}"})\
+        .format({"Odd 1 EXEMPLOS": "{:.2f}", "Odd 2 EXEMPLOS": "{:.2f}"})\
         .set_properties(**{'text-align': 'center'})
     st.dataframe(styled, height=260, width=400)
 
@@ -112,7 +112,7 @@ def calculadora():
     st.markdown("<h1 class='title-anim'>🎯 Calculadora <span>101%</span></h1>", unsafe_allow_html=True)
 
     # Botão logout
-    if st.button("🔒 Logout 🍕", key="logout_btn"):
+    if st.button("🔒 TERMINAR SESSÃO 🍕", key="logout_btn"):
         st.session_state["logged_in"] = False
         st.session_state["user"] = None
         st.experimental_rerun()
@@ -120,11 +120,11 @@ def calculadora():
     # Inputs lado a lado
     col1, col2 = st.columns(2)
     with col1:
-        odd1 = st.number_input("🔢 Odd 1", min_value=1.01, step=0.01, value=2.10, format="%.2f")
+        odd1 = st.number_input("🔢 Odd/Jogo 1", min_value=1.01, step=0.01, value=2.10, format="%.2f")
     with col2:
-        odd2 = st.number_input("🔢 Odd 2", min_value=1.01, step=0.01, value=1.05, format="%.2f")
+        odd2 = st.number_input("🔢 Odd/Jogo 2", min_value=1.01, step=0.01, value=1.05, format="%.2f")
 
-    amount = st.number_input("💰 Montante Total a Apostar (€)", min_value=1.0, step=1.0, value=100.0, format="%.2f")
+    amount = st.number_input("💰 Montante Total a Apostar em (€)", min_value=1.0, step=1.0, value=100.0, format="%.2f")
 
     inv1 = 1 / odd1
     inv2 = 1 / odd2
@@ -133,7 +133,7 @@ def calculadora():
     st.markdown("---")
 
     if arbitrage_percent < 1:
-        st.success("✅ Arbitragem possível! Lucro garantido 🔒")
+        st.success("✅ Arbitragem possível! Lucro garantido 🔒 *Dá o CHECK abaixo para saberes os valores que terás de usar!* ")
 
         stake1 = amount * inv1 / arbitrage_percent
         stake2 = amount * inv2 / arbitrage_percent
@@ -144,8 +144,8 @@ def calculadora():
         lucro_percent = round((lucro_minimo / amount) * 100, 2)
 
         st.markdown("### 📊 Resultados")
-        st.info(f"🔹 **Aposta 1:** €{stake1:.2f} | Odd: {odd1:.2f}")
-        st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2:.2f}")
+        st.info(f"🔹 **Aposta/Jogo 1:** €{stake1:.2f} | Odd: {odd1:.2f}")
+        st.info(f"🔹 **Aposta/Jogo 2:** €{stake2:.2f} | Odd: {odd2:.2f}")
         st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
 
         # Gráfico simples lucro acumulado em 10 rodadas
@@ -187,7 +187,7 @@ def calculadora():
             exportar_historico_csv()
 
     else:
-        st.error("⚠️ SUREBET NÃO possível com essas odds. Tenta outras!!!")
+        st.error("⚠️ NÃO é possível fazer cálculo com estas odds. Tenta de novo ou verifica os exemplos abaixo!")
 
     tabela_exemplos()
 
@@ -196,15 +196,15 @@ def calculadora():
     <div style="
         font-size: 1.0rem;
         font-weight: 700;
-        color: #ff6f61;
+        color: #99ffff;
         text-align: center;
         margin-top: 15px;
         margin-bottom: 10px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
-        text-shadow: 1px 2px 1px #ffb3ab;
+        text-shadow: 0px 4px 0px #ffb3ab;
         ">
-        Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕
+        Calculadora 101% Sure BET from AFZF to ÁLAMOS partners xD! 🧠🍕
     </div>
     """, unsafe_allow_html=True)
 
