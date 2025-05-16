@@ -47,7 +47,7 @@ st.markdown("""
     text-align: center; margin-top: 10px; user-select: none;
   }
   .footer .afzf {
-    font-weight: 900; color: #79fbff;
+    font-weight: 900; color: #00e8ff;
     animation: pulse 3s infinite;
   }
   .stButton > button {
