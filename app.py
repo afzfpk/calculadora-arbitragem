@@ -8,9 +8,8 @@ st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", lay
 
 # Credenciais simples para login
 VALID_USERS = {
-    "afzfpika": "admin4124",  # muda aqui para a senha que quiseres
-    "tiagonascimento": "alamos2025",
-    "teste": "alamos2025"
+    "afzfpika": "admin2025",  # muda aqui para a senha que quiseres
+    "tiagonascimento": "amigos2025"
 }
 
 def login():
@@ -22,6 +21,7 @@ def login():
             st.session_state["logged_in"] = True
             st.session_state["user"] = username
             st.success(f"Bem-vindo, {username}!")
+            st.experimental_rerun()
         else:
             st.error("Usuário ou senha incorretos")
     return st.session_state.get("logged_in", False)
