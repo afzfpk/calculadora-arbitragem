@@ -66,13 +66,13 @@ def login():
     st.title("🔐 Só pr'a malta! Mas.. Faz LOG-in primeiro...!")
     nome = st.text_input("Como te chamas mesmo?", placeholder="O teu nome???")
     pwd  = st.text_input("Qual é a password mesmo?", type="password", placeholder="A tua password???")
-    if st.button("CLICAR PRA ENTRAR"):
+    if st.button("DOBLE CLICK PR'A ENTRARES!"):
         if nome in VALID_USERS and VALID_USERS[nome] == pwd:
             st.session_state.logged_in = True
             st.session_state.user = nome
-            st.success(f"✨ BOAS {nome}, ESTÁS COM LOG-in FEITO!")
+            st.success(f"✨ BOAS {nome}, INICIASTE SESSÃO COM SUCESSO!")
         else:
-            st.error("⚠️Tens a certeza que sabes o teu nome e a tua password?? Tenta outra vez é melhor senão, liga-me para o WHATSAPP!")
+            st.error("⚠️Tens a certeza que sabes o teu nome e a tua password?? Tenta outra vez é melhor, senão.. liga-me para o WHATSAPP!")
 
 def tabela_exemplos():
     odds = [1.20,1.30,1.40,1.50,1.60,1.80,2.00,2.20]
@@ -95,12 +95,12 @@ def exportar_csv():
 def calculadora():
     # Cabeçalho
     st.markdown(
-        "<h1 class='title-anim'>⚽ CALCULATOR SureBet<span class='percent-anim'>🍕 101% 🍕</span> devloped by AFZF </h1>",
+        "<h1 class='title-anim'>⚽ CALCULATOR SureBet  <span class='percent-anim'>🍕 101% 🍕</span> devloped by AFZF </h1>",
         unsafe_allow_html=True
     )
 
     # Logout
-    if st.button("🔒 Sair"):
+    if st.button("🔒 DOBLE CLICK PR'A TERMINAR SESSÃO"):
         st.session_state.clear()
         return
 
@@ -108,19 +108,19 @@ def calculadora():
     col1, col2 = st.columns(2)
     with col1:
         odd1 = st.number_input(
-            "🔢 Odd/Jogo 1",
+            "🔢 Odd/Jogo 1;",
             min_value=1.01, max_value=100.0, value=2.10, step=0.01,
             format="%.2f", help="Odd do primeiro mercado/jogo"
         )
     with col2:
         odd2 = st.number_input(
-            "🔢 Odd/Jogo 2",
+            "🔢 Odd/Jogo 2;",
             min_value=1.01, max_value=100.0, value=1.05, step=0.01,
             format="%.2f", help="Odd do segundo mercado/jogo"
         )
 
     amount = st.number_input(
-        "💰 Quanto vais pôr (€)?",
+        "💰 Quantos (€) queres investir/dividir na aposta? Coloca o valor AQUI para dividir/investir e em CIMA coloca as ODD's que a que desejas dividir este mesmo valor!",
         min_value=1.0, max_value=1e6, value=100.0, step=1.0,
         format="%.2f", help="Total para repartir nas duas apostas"
     )
@@ -140,11 +140,11 @@ def calculadora():
         l2 = stake2 * odd2 - amount
         lucro = round(min(l1, l2), 2)
         pct = round(lucro / amount * 100, 2)
-        st.success(f"✅ Dá para arbitragem! Lucro garantido: €{lucro} ({pct}%)")
+        st.success(f"✅ Dá para fazer lucro com esta..! Lucro garantido: €{lucro} ({pct}%)")
 
         st.markdown("### 📊 Resultados")
-        st.info(f"Aposta/Jogo 1: €{stake1:.2f} | Odd {odd1:.2f}")
-        st.info(f"Aposta/Jogo 2: €{stake2:.2f} | Odd {odd2:.2f}")
+        st.info(f"Odd/Jogo 1: €{stake1:.2f} | Odd {odd1:.2f}")
+        st.info(f"Odd/Jogo 2: €{stake2:.2f} | Odd {odd2:.2f}")
 
         # Gráfico de banca acumulada
         df_g = pd.DataFrame({
@@ -171,7 +171,7 @@ def calculadora():
             st.dataframe(dfh, height=220)
             exportar_csv()
     else:
-        st.error("⚠️ Sem arbitragem possível com essas odds. Tenta outras.")
+        st.error("⚠️ Sem lucro possível com essas odds. Tenta outras pah! ")
 
     # Tabela de exemplos
     tabela_exemplos()
