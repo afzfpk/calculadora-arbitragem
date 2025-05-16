@@ -202,7 +202,7 @@ def calculadora():
         margin-bottom: 10px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
-        text-shadow: 1px 4px #ffb3ab;
+        text-shadow: 4px #e6ffff;
         ">
         Calculadora 101% Sure BET from AFZF to ÁLAMOS partners xD! 🧠🍕
     </div>
