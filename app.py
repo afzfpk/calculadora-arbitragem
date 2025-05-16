@@ -5,7 +5,6 @@ from datetime import datetime
 
 st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", layout="centered")
 
-# Usuários válidos e passwords
 VALID_USERS = {
     "afzfpk": "4124",
     "familia": "familia2025"
@@ -44,16 +43,31 @@ def animar_afzf():
     st.markdown(pisca_css, unsafe_allow_html=True)
 
 def tabela_exemplos():
-    st.markdown("### 📋 Exemplos de Odds que dão Arbitragem (lucro garantido)")
-
-    odds1 = np.round(np.arange(1.01, 2.5, 0.05), 2)
+    st.markdown("### 📋 Exemplos comuns de Odds que dão Arbitragem (lucro garantido)")
+    # Odds comuns usadas em apostas (exemplo)
+    odd1_comuns = [1.20, 1.30, 1.40, 1.50, 1.60, 1.80, 2.00, 2.20]
     exemplos = []
-    for o1 in odds1:
-        o2_min = round(1 / (1 - 1/o1), 2)  # fórmula para arbitragem: 1/odd1 + 1/odd2 < 1
+    for o1 in odd1_comuns:
+        # Calcula a odd mínima para o parar arbitragem
+        o2_min = round(1 / (1 - 1/o1), 2)
         exemplos.append({"Odd 1": o1, "Odd 2 mínima para arbitragem": o2_min})
 
     df = pd.DataFrame(exemplos)
-    st.dataframe(df.style.format({"Odd 1": "{:.2f}", "Odd 2 mínima para arbitragem": "{:.2f}"}), height=250)
+
+    # Estilo simples e bonito para a tabela
+    styled_df = df.style.set_properties(**{
+        'background-color': '#f9f9f9',
+        'color': '#333',
+        'border': '1px solid #ddd',
+        'text-align': 'center',
+        'font-weight': 'bold',
+        'font-size': '14px'
+    }).set_table_styles([{
+        'selector': 'th',
+        'props': [('background-color', '#f39c12'), ('color', 'white'), ('font-size', '16px')]
+    }]).hide_index()
+
+    st.table(styled_df)
 
 def calculadora():
     st.markdown(
@@ -99,7 +113,6 @@ def calculadora():
         st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2}")
         st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
 
-        # Gráfico de lucro ao longo de 10 apostas
         df = pd.DataFrame({
             'Apostas': list(range(1, 11)),
             'Banca (€)': np.cumsum([lucro_minimo] * 10) + amount
@@ -125,7 +138,7 @@ def calculadora():
 
         tabela_exemplos()
 
-        # Surpresa extra: animação de balões se lucro alto
+        # Surpresa extra: balões se lucro alto
         if arbitrage_percent < 0.9:
             st.balloons()
             st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão!")
@@ -141,6 +154,12 @@ def calculadora():
         unsafe_allow_html=True
     )
 
+def surpresa_mega_secreta():
+    # Botão surpresa que aparece no rodapé para o usuário descobrir
+    if st.button("🎁 Surpresa? Clique aqui!"):
+        st.balloons()
+        st.success("Você encontrou o easter egg! 🥳 Que a sorte te acompanhe nas apostas!")
+
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
     st.session_state["user"] = None
@@ -149,3 +168,4 @@ if not st.session_state["logged_in"]:
     login()
 else:
     calculadora()
+    surpresa_mega_secreta()
