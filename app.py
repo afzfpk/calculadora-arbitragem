@@ -7,7 +7,7 @@ st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", lay
 
 # Usuários válidos e suas senhas (modifica conforme quiser)
 VALID_USERS = {
-    "afzfpk": "mypassword123",
+    "afzfpk": "4124",
     "familia": "familia2025"
 }
 
