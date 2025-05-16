@@ -5,8 +5,8 @@ from datetime import datetime
 
 # Configuração da página
 st.set_page_config(
-    page_title="🍕⚽ SureBet101% by AFZF",
-    page_icon="🎯🍕",
+    page_title="⚽ SUREBET - 101% by AFZF",
+    page_icon="🍕",
     layout="centered"
 )
 
@@ -63,21 +63,21 @@ VALID_USERS = {
 }
 
 def login():
-    st.title("🔐 Só a malta! Faz login")
-    nome = st.text_input("Como te chamas?", placeholder="O teu nome")
-    pwd  = st.text_input("Qual é a password?", type="password", placeholder="A tua password")
-    if st.button("Bora entrar"):
+    st.title("🔐 Só pr'a malta! Mas.. Faz LOG-in primeiro...!")
+    nome = st.text_input("Como te chamas mesmo?", placeholder="O teu nome???")
+    pwd  = st.text_input("Qual é a password mesmo?", type="password", placeholder="A tua password???")
+    if st.button("CLICAR PRA ENTRAR"):
         if nome in VALID_USERS and VALID_USERS[nome] == pwd:
             st.session_state.logged_in = True
             st.session_state.user = nome
-            st.success(f"🎉 Olá {nome}, estás dentro!")
+            st.success(f"✨ BOAS {nome}, ESTÁS COM LOG-in FEITO!")
         else:
-            st.error("⚠️ Nome ou password inválidos. Tenta outra vez.")
+            st.error("⚠️Tens a certeza que sabes o teu nome e a tua password?? Tenta outra vez é melhor senão, liga-me para o WHATSAPP!")
 
 def tabela_exemplos():
     odds = [1.20,1.30,1.40,1.50,1.60,1.80,2.00,2.20]
     exemplos = [
-        {"Odd/Jogo 1": o, "Odd/Jogo 2 mínima": round(1/(1-1/o),2)}
+        {"Odd/Jogo 1;": o, "Odd/Jogo 2;": round(1/(1-1/o),2)}
         for o in odds
     ]
     df = pd.DataFrame(exemplos)
