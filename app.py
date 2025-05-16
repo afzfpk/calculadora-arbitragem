@@ -1,17 +1,24 @@
 
 import streamlit as st
+import pandas as pd
+import numpy as np
+from datetime import datetime
 
 st.set_page_config(page_title="Calculadora de Arbitragem", page_icon="🎯", layout="centered")
 
-# Título
+# Cabeçalho bonito
 st.markdown(
     '''
     <h1 style='text-align: center; color: #4CAF50;'>🎯 Calculadora <span style="color:#f39c12">101% Sure BET</span></h1>
-    <p style='text-align: center; color: #888;'>Simula apostas seguras com odds diferentes e vê o teu lucro garantido 💸</p>
-    <hr style='margin-top:20px; margin-bottom:20px;'>
+    <p style='text-align: center; color: #888;'>Calcula apostas seguras e vê se consegues lucrar em qualquer resultado 💸</p>
+    <hr>
     ''',
     unsafe_allow_html=True
 )
+
+# Reset
+if st.button("🔁 Recomeçar"):
+    st.experimental_rerun()
 
 # Entradas
 with st.container():
@@ -41,13 +48,44 @@ if arbitrage_percent < 1:
     lucro_minimo = round(min(lucro1, lucro2), 2)
     lucro_percent = round((lucro_minimo / amount) * 100, 2)
 
+    # Resultados
     st.markdown("### 📊 Resultados")
     st.info(f"🔹 **Aposta 1:** €{stake1:.2f} | Odd: {odd1}")
     st.info(f"🔹 **Aposta 2:** €{stake2:.2f} | Odd: {odd2}")
     st.markdown(f"<h3 style='color:#27ae60'>💸 Lucro garantido: €{lucro_minimo} ({lucro_percent}%)</h3>", unsafe_allow_html=True)
-else:
-    st.error("❌ Não há arbitragem possível com estas odds.")
 
-# Rodapé
+    # Simulação gráfica de lucro
+    st.markdown("### 📈 Crescimento Simulado")
+    df = pd.DataFrame({
+        'Apostas': list(range(1, 11)),
+        'Banca (€)': np.cumsum([lucro_minimo] * 10) + amount
+    })
+    st.line_chart(df.set_index('Apostas'))
+
+    # Histórico (sessão atual)
+    if 'historico' not in st.session_state:
+        st.session_state.historico = []
+
+    if st.button("💾 Guardar esta aposta"):
+        st.session_state.historico.append({
+            'data': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'odd1': odd1,
+            'odd2': odd2,
+            'montante': amount,
+            'lucro': lucro_minimo
+        })
+        st.success("✅ Aposta guardada no histórico.")
+
+    if st.session_state.historico:
+        st.markdown("### 🕒 Histórico de Apostas")
+        st.table(pd.DataFrame(st.session_state.historico))
+
+else:
+    st.error("❌ Não há arbitragem possível com estas odds. Tenta outras!")
+
+# Rodapé personalizado
 st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("Feito com ❤️ por afzfpk · Calculadora 101% Sure BET")
+st.markdown(
+    "<p style='text-align:center; color:gray;'>Dev with <strong>o p e n  a i</strong> & <strong>s t r e a m  l i t</strong> — config and coded by <strong>AFZF</strong><br>Calculadora 101% Sure BET for <strong>ÁLAMOS partners</strong> 🧠🍕</p>",
+    unsafe_allow_html=True
+)
