@@ -5,8 +5,8 @@ from datetime import datetime
 
 # Configurações da página com ícone simples (não duplicado)
 st.set_page_config(
-    page_title="Calculadora SUREBET101% by AFZF",
-    page_icon="🎯",
+    page_title="Calculadora🎯SUREBET101% - by.AFZF🍕",
+    page_icon="🎯🍕",
     layout="centered",
     initial_sidebar_state="expanded"
 )
@@ -25,12 +25,12 @@ css = """
     }
     /* Animação título principal */
     .title-anim {
-        font-weight: 900;
+        font-weight: 800;
         font-size: 3rem;
         text-align: center;
         color: #4CAF50;
         margin-bottom: 30px;
-        animation: pulseGlow 2.5s ease-in-out infinite;
+        animation: pulseGlow 2.0s ease-in-out infinite;
         user-select: none;
     }
     .title-anim span {
@@ -38,15 +38,15 @@ css = """
     }
     @keyframes pulseGlow {
         0%, 100% {
-            text-shadow: 0 0 10px #4CAF50, 0 0 20px #4CAF50;
+            text-shadow: 0 0 9px #4CAF50, 0 0 15px #4CAF50;
         }
         50% {
-            text-shadow: 0 0 20px #f39c12, 0 0 30px #f39c12;
+            text-shadow: 0 0 19px #f39c12, 0 0 25px #f39c12;
         }
     }
     /* Rodapé discreto */
     .footer {
-        opacity: 0.5;
+        opacity: 0.8;
         font-size: 13px;
         color: gray;
         text-align: center;
@@ -68,18 +68,18 @@ css = """
 """
 
 def login():
-    st.title("🔐 Login para acessar a Calculadora")
-    username = st.text_input("Usuário", placeholder="Digite seu usuário")
-    password = st.text_input("Senha", type="password", placeholder="Digite sua senha")
+    st.title("🔐 Só convidados ahahah! Login para acessar à Calculadora101%?")
+    username = st.text_input("Usuário", placeholder="O TEU NOME?")
+    password = st.text_input("Senha", type="password", placeholder="A TUA PASSWORD?")
     login_btn = st.button("Entrar")
     if login_btn:
         if username in VALID_USERS and password == VALID_USERS[username]:
             st.session_state["logged_in"] = True
             st.session_state["user"] = username
-            st.success(f"Bem-vindo, {username}! 🎉")
+            st.success(f"✅ Bem-vindo, {username}! 🍕")
             st.experimental_rerun()
         else:
-            st.error("Usuário ou senha incorretos")
+            st.error("NOME E/OU PASSWORD INCORRETO/A ")
 
 def tabela_exemplos():
     odd1_comuns = [1.20, 1.30, 1.40, 1.50, 1.60, 1.80, 2.00, 2.20]
@@ -112,7 +112,7 @@ def calculadora():
     st.markdown("<h1 class='title-anim'>🎯 Calculadora <span>101%</span></h1>", unsafe_allow_html=True)
 
     # Botão logout
-    if st.button("🔒 Logout", key="logout_btn"):
+    if st.button("🔒 Logout 🍕", key="logout_btn"):
         st.session_state["logged_in"] = False
         st.session_state["user"] = None
         st.experimental_rerun()
@@ -187,7 +187,7 @@ def calculadora():
             exportar_historico_csv()
 
     else:
-        st.error("⚠️ Arbitragem NÃO possível com essas odds. Tente outras.")
+        st.error("⚠️ SUREBET NÃO possível com essas odds. Tenta outras!!!")
 
     tabela_exemplos()
 
@@ -202,7 +202,7 @@ def calculadora():
         margin-bottom: 10px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
-        text-shadow: 1px 1px 1px #ffb3ab;
+        text-shadow: 1px 2px 1px #ffb3ab;
         ">
         Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕
     </div>
