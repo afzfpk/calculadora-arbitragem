@@ -194,15 +194,15 @@ def calculadora():
     # Texto divertido e destacado abaixo da tabela
     st.markdown("""
     <div style="
-        font-size: 1.3rem;
+        font-size: 1.0rem;
         font-weight: 700;
         color: #ff6f61;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 15px;
         margin-bottom: 10px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
-        text-shadow: 1px 1px 3px #ffb3ab;
+        text-shadow: 1px 1px 1px #ffb3ab;
         ">
         Calculadora 101% Sure BET for ÁLAMOS partners xD! 🧠🍕
     </div>
