@@ -15,7 +15,6 @@ VALID_USERS = {
     "familia": "familia2025"
 }
 
-# CSS geral
 css = """
 <style>
   body {
@@ -40,17 +39,27 @@ css = """
     font-size: 0.85rem;
     text-align: center;
   }
-  .above-footer {
-    font-size: 1rem; font-weight: 700; color: #99ffff;
-    text-align: center; margin: 20px 0 10px; text-shadow: 1px 1px 3px #e6ffff;
+  .footer-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #99ffff;
+    text-align: center;
+    margin: 20px 0 10px;
+    text-shadow: 1px 1px 3px #e6ffff;
     user-select: none;
   }
   .footer {
-    opacity: 0.5; font-size: 13px; color: gray;
-    text-align: center; margin-top: 20px; user-select: none;
+    opacity: 0.5;
+    font-size: 13px;
+    color: gray;
+    text-align: center;
+    margin-top: 10px;
+    user-select: none;
   }
   .footer .afzf {
-    font-weight: 900; color: #f39c12; animation: pulse 2s infinite;
+    font-weight: 900;
+    color: #f39c12;
+    animation: pulse 2s infinite;
   }
   .stButton > button {
     width: 100%; margin-top: 10px;
@@ -63,25 +72,22 @@ def login():
     st.title("🔐 Só a malta! Faz login")
     nome = st.text_input("Como te chamas?", placeholder="O teu nome")
     pwd  = st.text_input("Qual é a password?", type="password", placeholder="A tua password")
-    entrar = st.button("Bora entrar")
-    if entrar:
+    if st.button("Bora entrar"):
         if nome in VALID_USERS and VALID_USERS[nome] == pwd:
             st.session_state.logged_in = True
             st.session_state.user = nome
+            st.experimental_rerun()
         else:
             st.error("⚠️ Nome ou password inválidos. Tenta outra vez.")
 
 def tabela_exemplos():
     odds = [1.20,1.30,1.40,1.50,1.60,1.80,2.00,2.20]
-    exemplos = [
-        {"Odd/Jogo 1": o, "Odd/Jogo 2 mínima": round(1/(1-1/o),2)}
-        for o in odds
-    ]
+    exemplos = [{"Odd/Jogo 1": o, "Odd/Jogo 2 mínima": round(1/(1-1/o),2)} for o in odds]
     df = pd.DataFrame(exemplos)
     st.dataframe(
         df.style
           .set_table_attributes('class="compact-table"')
-          .format({"Odd/Jogo 1":"{:.2f}", "Odd/Jogo 2 mínima":"{:.2f}"})
+          .format({"Odd/Jogo 1":"{:.2f}","Odd/Jogo 2 mínima":"{:.2f}"})
     , height=260, width=400)
 
 def exportar_csv():
@@ -91,6 +97,7 @@ def exportar_csv():
 
 def calculadora():
     st.markdown(css, unsafe_allow_html=True)
+
     st.markdown(
         "<h1 style='text-align:center; font-weight:900; font-size:2.5rem;'>"
         "🎯 Calculadora SUREBET <span class='percent-anim'>101%</span>"
@@ -99,7 +106,7 @@ def calculadora():
 
     if st.button("🔒 Sair"):
         st.session_state.clear()
-        return  # volta ao login
+        st.experimental_rerun()
 
     col1, col2 = st.columns(2)
     with col1:
@@ -115,11 +122,11 @@ def calculadora():
     if soma < 1:
         stake1 = amount * inv1 / soma
         stake2 = amount * inv2 / soma
-        lucro1 = stake1 * odd1 - amount
-        lucro2 = stake2 * odd2 - amount
-        lucro = round(min(lucro1, lucro2), 2)
-        pct = round(lucro / amount * 100, 2)
-        st.success(f"✅ Dá para arbitragem! Lucro garantido: €{lucro} ({pct}%)")
+        luc1 = stake1 * odd1 - amount
+        luc2 = stake2 * odd2 - amount
+        lucro = round(min(luc1, luc2), 2)
+        pct = round(lucro/amount*100, 2)
+        st.success(f"✅ Dá para arbitragem! Lucro: €{lucro} ({pct}%)")
 
         st.markdown("### 📊 Resultados")
         st.info(f"Aposta/Jogo 1: €{stake1:.2f} | Odd {odd1:.2f}")
@@ -152,11 +159,7 @@ def calculadora():
 
     tabela_exemplos()
 
-    st.markdown("""
-    <div class='above-footer'>
-      Calculadora 101% Sure BET — feito por AFZF para a malta do ÁLAMOS xD! 🧠🍕
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<div class='above-footer'>Calculadora 101% Sure BET — config and dev by AFZF para a malta! 🧠🍕</div>", unsafe_allow_html=True)
 
     st.markdown("""
     <div class='footer'>
