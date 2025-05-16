@@ -8,8 +8,9 @@ st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", lay
 
 # Credenciais simples para login
 VALID_USERS = {
-    "afzfpk": "mypassword123",  # muda aqui para a senha que quiseres
-    "familia": "familia2025"
+    "afzfpika": "admin4124",  # muda aqui para a senha que quiseres
+    "tiagonascimento": "alamos2025",
+    "teste": "alamos2025"
 }
 
 def login():
