@@ -133,7 +133,7 @@ def calculadora():
     st.markdown("---")
 
     if arbitrage_percent < 1:
-        st.success("✅ Arbitragem possível! Lucro garantido 🔒 *Dá o CHECK abaixo para saberes os valores que terás de usar!* ")
+        st.success("✅ Arbitragem possível! Lucro garantido 🔒 ")
 
         stake1 = amount * inv1 / arbitrage_percent
         stake2 = amount * inv2 / arbitrage_percent
@@ -202,7 +202,7 @@ def calculadora():
         margin-bottom: 10px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
-        text-shadow: 1px 4px 2px #ffb3ab;
+        text-shadow: 1px 4px #ffb3ab;
         ">
         Calculadora 101% Sure BET from AFZF to ÁLAMOS partners xD! 🧠🍕
     </div>
