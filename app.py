@@ -84,7 +84,7 @@ def tabela_exemplos():
     st.dataframe(
         df.style
           .set_table_attributes('class="compact-table"')
-          .format({"Odd/Jogo 1":"{:.2f}","Odd/Jogo 2 mínima":"{:.2f}"})
+          .format({"Odd/Jogo 1;":"{:.2f}","Odd/Jogo 2;":"{:.2f}"})
     , height=260, width=400)
 
 def exportar_csv():
@@ -95,7 +95,7 @@ def exportar_csv():
 def calculadora():
     # Cabeçalho
     st.markdown(
-        "<h1 class='title-anim'>🍕⚽ SureBet <span class='percent-anim'>101%</span></h1>",
+        "<h1 class='title-anim'>⚽ CALCULATOR SureBet<span class='percent-anim'>🍕 101% 🍕</span> devloped by AFZF </h1>",
         unsafe_allow_html=True
     )
 
