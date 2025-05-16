@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import time
 
 st.set_page_config(page_title="Calculadora 101% Sure BET", page_icon="🎯", layout="centered")
 
-# Usuários válidos e passwords
 VALID_USERS = {
     "afzfpk": "4124",
     "familia": "familia2025"
@@ -23,6 +23,14 @@ def login():
             st.success(f"Bem-vindo, {username}! 🎉")
         else:
             st.error("Usuário ou senha incorretos")
+
+def animar_afzf():
+    # simples efeito pisca-pisca no nome AFZF com emojis
+    for _ in range(2):
+        st.markdown("<h2 style='text-align:center; color:#27ae60;'>by <span style='color:#f39c12;'>AFZF</span> 🧠🍕</h2>", unsafe_allow_html=True)
+        time.sleep(0.5)
+        st.markdown("<h2 style='text-align:center; color:#27ae60;'>by <span style='color:#e74c3c;'>AFZF</span> 🤖✨</h2>", unsafe_allow_html=True)
+        time.sleep(0.5)
 
 def calculadora():
     st.markdown(
@@ -91,16 +99,29 @@ def calculadora():
             st.markdown("### 🕒 Histórico de Apostas")
             st.table(pd.DataFrame(st.session_state.historico))
 
+        # Tabela compacta de exemplos de odds para arbitragem:
+        with st.expander("📚 Exemplos rápidos de odds para arbitragem"):
+            exemplos = {
+                "Odd 1": [1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80, 1.90, 2.00],
+                "Mínima Odd 2": [11.00, 6.00, 3.90, 2.50, 2.33, 2.14, 2.04, 1.90, 1.83, 1.75]
+            }
+            df_exemplos = pd.DataFrame(exemplos)
+            st.dataframe(df_exemplos.style.set_precision(2).set_table_styles([
+                {'selector': 'thead', 'props': [('background-color', '#f9f9f9')]},
+                {'selector': 'tbody tr:hover', 'props': [('background-color', '#e0f7fa')]},
+                {'selector': 'td', 'props': [('text-align', 'center')]},
+            ]), height=250)
+
     else:
         st.error("❌ Não há arbitragem possível com estas odds. Tenta outras!")
 
     st.markdown("<hr>", unsafe_allow_html=True)
+    animar_afzf()
     st.markdown(
         "<p style='text-align:center; color:gray;'>Dev with <strong>O P E N A I</strong> & <strong>S T R E A M L I T</strong> — configured and coded by <strong>AFZF</strong><br>Calculadora 101% Sure BET for <strong>ÁLAMOS partners xD! </strong> 🧠🍕</p>",
         unsafe_allow_html=True
     )
 
-    # Surpresa extra: um easter egg divertido que aparece se o lucro for alto
     if arbitrage_percent < 0.9:
         st.balloons()
         st.success("🎉 Wow! Lucro mega alto detectado! Parabéns, campeão!")
